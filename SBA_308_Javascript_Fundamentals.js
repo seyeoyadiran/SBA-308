@@ -76,26 +76,46 @@ const LearnerSubmissions = [
   }
 ];
 
-function getLearnerData(course, ag, submissions) {
-  // here, we would process this data to achieve the desired result.
-  const result = [
-    {
-      id: 125,
-      avg: 0.985, // (47 + 150) / (50 + 150)
-      1: 0.94, // 47 / 50
-      2: 1.0 // 150 / 150
-    },
-    {
-      id: 132,
-      avg: 0.82, // (39 + 125) / (50 + 150)
-      1: 0.78, // 39 / 50
-      2: 0.833 // late: (140 - 15) / 150
-    }
-  ];
+//Group students submissions by their learner IDs
+function getAllIds(submissions){
+  //Grouping the ids together by the learner ID
+   const studentsById = {};
 
-  return result;
+  submissions.forEach((learnId ) => {
+    const idNum = learnId.learner_id;
+
+       if(!studentsById[idNum])
+       {
+         studentsById[idNum] = [];
+       }
+      studentsById[idNum].push(learnId);
+    })
+  return studentsById;
 }
 
-const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
+//Getting the learner's total grade and averaging it out.
+function getGradeAverage(ag , submissions){
 
-console.log(result);
+
+  for(let j = 0; j < submissions.length; j++){
+    for(let i = 0; i < ag.assignments.length; i++){
+      
+      //Checking if they have the same id value
+      if(submissions[j].assignment_id === ag.assignments[i].id)
+      console.log('This assignment group ' + submissions[j].assignment_id + ' Has the score ' + submissions[j].submission.score + ' Out of ' + ag.assignments[i].points_possible)
+    }
+  }
+}
+
+
+//Putting it all together
+function getLearnerData(course, ag, submissions) {
+  // here, we would process this data to achieve the desired result.
+ 
+  getGradeAverage(submissions);
+}
+
+//const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
+
+//console.log(getAllIds(LearnerSubmissions))
+getGradeAverage(AssignmentGroup, LearnerSubmissions);
