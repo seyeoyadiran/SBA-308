@@ -126,11 +126,34 @@ function getAverage(assignGroup, submissions){
             if(ret[myId][i].learner_id == '125'){
               //Grade is the average for that score
               let grade = ret[myId][i].submission.score /  assignGroup.assignments[j].points_possible
+
+              try{
+                if(assignGroup.assignments[j].points_possible == 0){
+                  throw('Divide by 0 error')
+                }
+                if(typeof(grade) == String ){
+                  throw ('Need an integer instead of a string')
+                }
+               }
+              catch (err){ 
+                  console.log(error)
+              }
               console.log('student ' + ret[myId][i].learner_id + ' Has ' + ret[myId][i].submission.score + ' out of ' + assignGroup.assignments[j].points_possible + ' For assignment ' +assignGroup.assignments[j].id + ' His grade is ' + grade);
             }
             else if(ret[myId][i].learner_id == '132'){
               //Grade is the average for that score
             let grade = ret[myId][i].submission.score /  assignGroup.assignments[j].points_possible
+            try{
+              if(assignGroup.assignments[j].points_possible == 0){
+                throw('Divide by 0 error')
+              }
+              if(typeof(grade) == String ){
+                throw ('Need an integer instead of a string')
+              }
+             }
+            catch (err){ 
+                console.log(error)
+            }
             console.log('student ' + ret[myId][i].learner_id + ' Has ' + ret[myId][i].submission.score + ' out of ' + assignGroup.assignments[j].points_possible + ' For assignment ' +assignGroup.assignments[j].id + ' His grade is ' + grade);    
             }
             else{
@@ -153,27 +176,12 @@ return returnMe;
 
 function getLearnerData(course, ag, submissions) {
   // here, we would process this data to achieve the desired result.
-  const result = [
-    {
-      id: 125,
-      avg: 0.985, // (47 + 150) / (50 + 150)
-      1: 0.94, // 47 / 50
-      2: 1.0 // 150 / 150
-    },
-    {
-      id: 132,
-      avg: 0.82, // (39 + 125) / (50 + 150)
-      1: 0.78, // 39 / 50
-      2: 0.833 // late: (140 - 15) / 150
-    }
-  ];
-
-  return result;
-}
-const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
-console.log('Here are the items grouped together')
-console.log(getAllIds(LearnerSubmissions))
-
-console.log('\n Below we are getting the grades for this assignemtn if it was turned in \n')
-console.log(getAverage(AssignmentGroup, LearnerSubmissions));
-
+  console.log('Here are the items grouped together')
+  console.log(getAllIds(submissions))
+  
+  console.log('\n Below we are getting the grades for this assignemtn if it was turned in \n')
+  console.log(getAverage(ag, submissions));
+  
+ } 
+ 
+ getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
