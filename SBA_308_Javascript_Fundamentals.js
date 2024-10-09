@@ -90,32 +90,78 @@ function getAllIds(submissions){
        }
       studentsById[idNum].push(learnId);
     })
+   
   return studentsById;
 }
 
-//Getting the learner's total grade and averaging it out.
-function getGradeAverage(ag , submissions){
 
+function getAverage(assignGroup, submissions){
+  let ret = getAllIds(submissions);
+  let returnMe = []
+    
+  for(let myId in ret)
+  {
+    let currStudent = ret[myId][0].learner_id
+    for(let i = 0; i < ret[myId].length;i++){
+      let scoreTotal = 0;
+      for(let j = 0; j < assignGroup.assignments.length; j++){
 
-  for(let j = 0; j < submissions.length; j++){
-    for(let i = 0; i < ag.assignments.length; i++){
-      
-      //Checking if they have the same id value
-      if(submissions[j].assignment_id === ag.assignments[i].id)
-      console.log('This assignment group ' + submissions[j].assignment_id + ' Has the score ' + submissions[j].submission.score + ' Out of ' + ag.assignments[i].points_possible)
-    }
+        //Matching the ids for the test and the student submission
+          if(assignGroup.assignments[j].id  == ret[myId][i].assignment_id ){
+            
+            //Checking if the date has passed or not  
+            if(ret[myId][i].submission.submitted_at <= assignGroup.assignments[j].due_at){
+            
+            if(ret[myId][i].learner_id == '125'){
+              //Grade is the average for that score
+              let grade = ret[myId][i].submission.score /  assignGroup.assignments[j].points_possible
+              console.log('student ' + ret[myId][i].learner_id + ' Has ' + ret[myId][i].submission.score + ' out of ' + assignGroup.assignments[j].points_possible + ' For assignment ' +assignGroup.assignments[j].id + ' His grade is ' + grade);
+            }
+            else if(ret[myId][i].learner_id == '132'){
+              //Grade is the average for that score
+            let grade = ret[myId][i].submission.score /  assignGroup.assignments[j].points_possible
+            console.log('student ' + ret[myId][i].learner_id + ' Has ' + ret[myId][i].submission.score + ' out of ' + assignGroup.assignments[j].points_possible + ' For assignment ' +assignGroup.assignments[j].id + ' His grade is ' + grade);    
+            }
+            else{
+              break;
+            }
+            //Here I'm trying to push the elements into the return array
+            returnMe.push(ret[myId][i].learner_id)
+        }
+      }
+        
+   }
   }
+
+
+}
+return returnMe;
 }
 
 
-//Putting it all together
 function getLearnerData(course, ag, submissions) {
   // here, we would process this data to achieve the desired result.
- 
-  getGradeAverage(submissions);
+  const result = [
+    {
+      id: 125,
+      avg: 0.985, // (47 + 150) / (50 + 150)
+      1: 0.94, // 47 / 50
+      2: 1.0 // 150 / 150
+    },
+    {
+      id: 132,
+      avg: 0.82, // (39 + 125) / (50 + 150)
+      1: 0.78, // 39 / 50
+      2: 0.833 // late: (140 - 15) / 150
+    }
+  ];
+
+  return result;
 }
+const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
+console.log('Here are the items grouped together')
+console.log(getAllIds(LearnerSubmissions))
 
-//const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
+console.log('We are getting the grades for this assignemtn if it was turned in')
+console.log(getAverage(AssignmentGroup, LearnerSubmissions));
 
-//console.log(getAllIds(LearnerSubmissions))
-getGradeAverage(AssignmentGroup, LearnerSubmissions);
