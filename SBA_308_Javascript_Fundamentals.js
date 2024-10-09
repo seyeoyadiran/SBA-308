@@ -99,6 +99,17 @@ function getAverage(assignGroup, submissions){
   let ret = getAllIds(submissions);
   let returnMe = []
     
+  try{
+      if(submissions.length <= 0 || assignGroup.assignments.length <= 0) {
+        throw "Add some elements in the Student Section or in the AssignmentGroup Section"
+      }    
+  } 
+  catch (err) {
+    console.log('Error there are no values to extract')
+
+  }
+
+
   for(let myId in ret)
   {
     let currStudent = ret[myId][0].learner_id
@@ -126,6 +137,7 @@ function getAverage(assignGroup, submissions){
               break;
             }
             //Here I'm trying to push the elements into the return array
+            //Couldn't figure out how to nest the same elements values into seperate objects then storing it in a nested way for each id
             returnMe.push(ret[myId][i].learner_id)
         }
       }
@@ -162,6 +174,6 @@ const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
 console.log('Here are the items grouped together')
 console.log(getAllIds(LearnerSubmissions))
 
-console.log('We are getting the grades for this assignemtn if it was turned in')
+console.log('\n Below we are getting the grades for this assignemtn if it was turned in \n')
 console.log(getAverage(AssignmentGroup, LearnerSubmissions));
 
